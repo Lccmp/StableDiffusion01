@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}模型訓練{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/photo.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='js/photo.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+    <div class="upload-container">
+        <h1>訓練 LoRA 模型</h1>
+        <input type="file" id="photo-upload" multiple accept="image/*">
+        <div id="preview-container"></div>
+
+        <label for="character-name">人物&lora名稱 (英文)</label>
+        <input type="text" id="character-name" placeholder="例如：fish">
+
+        <input type="hidden" id="trigger-word" value="masterpiece">
+
+        <button id="upload-button">開始上傳照片</button>
+        <p id="upload-status" class="status-message"></p>
+        
+        <button id="tag-button">生成標籤</button>
+        <p id="tag-status" class="status-message"></p>
+        
+        <button id="train-button">開始訓練模型</button>
+        <p id="train-status" class="status-message"></p>
+    </div>
+{% endblock %}

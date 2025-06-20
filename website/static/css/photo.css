@@ -1,0 +1,80 @@
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    background-color: #fbceae; /* 最淺的顏色作為容器背景 */
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+h1 {
+    color: #ac6363; /* 較深的粉色作為標題顏色 */
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ee8ebd; /* 紫粉色作為邊框 */
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+#preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.preview-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #be8ccd; /* 紫色作為預覽圖片邊框 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #9684d0; /* 最深的紫色作為按鈕背景 */
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #8271b8; /* 按鈕 hover 時稍微變深 */
+}
+
+.status-message {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.status-message.success {
+    color: green;
+}
+
+.status-message.error {
+    color: red;
+}
+
+.download-button {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 6px 12px;
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}

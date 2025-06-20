@@ -1,0 +1,261 @@
+{% extends 'base.html' %}  <!-- 繼承 base.html -->
+
+{% block title %}線上AI繪圖網站{% endblock %}  <!-- 替換 base.html 中的 title -->
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">  <!-- 如果有需要額外的 CSS -->
+{% endblock %}
+
+{% block content %}
+    <header>
+        <div class="header-content">
+            <h1>✨ 線上AI繪圖網站 ✨</h1>
+        </div>
+    </header>          
+    <main>
+        <div class="input-container">
+            <textarea id="description" placeholder="輸入想產生的圖片敘述..." rows="4"></textarea>
+            <div class="slider-container">
+                <div class="slider-item">
+                    <label for="num-images">圖片張數:</label>
+                    <input type="range" id="num-images" name="num-images" min="0" max="4" value="1">
+                    <span id="num-images-value">1</span>
+                </div>
+                <div class="slider-item">
+                    <label for="image-quality">圖片品質:</label>
+                    <input type="range" id="image-quality" name="image-quality" min="20" max="50" step="10" value="20">
+                    <span id="image-quality-value">20</span>
+                </div>
+            </div>
+            <button id="submit-button" class="submit-btn">送出</button> <!-- 改為 id 來做 JS 呼叫 -->
+        </div>
+        <div class="tag-container">
+            <!-- Tab 選單 -->
+            <div class="tab-menu">
+                <button class="tab active" data-tab="characters">人物</button>
+                <button class="tab" data-tab="clothes">服飾</button>
+                <button class="tab" data-tab="actions">表情動作</button>
+                <button class="tab" data-tab="scenes">場景</button>
+                <button class="tab" data-tab="lens">鏡頭</button>
+                <button class="tab" data-tab="style">藝術風格(加強)</button>
+            </div>
+            <!-- 標籤內容 -->
+            <div class="tab-content">
+                <!-- 人物分類 -->
+                <div class="tab-panel active" id="characters">
+                    <button class="tag-btn" data-text="girl">女孩</button>
+                    <button class="tag-btn" data-text="boy">男孩</button>
+                    <button class="tag-btn" data-text="elderly">老人</button>
+                    <button class="tag-btn" data-text="child">小孩</button>
+                    <button class="tag-btn" data-text="cat">貓</button>
+                    <button class="tag-btn" data-text="dog">狗</button>
+                    <button class="tag-btn" data-text="rabbit">兔子</button>
+                    <button class="tag-btn" data-text="bear">熊</button>
+                    <button class="tag-btn" data-text="cute">可愛</button>
+                    <button class="tag-btn" data-text="mature">成熟</button>
+                    <button class="tag-btn" data-text="cool">帥氣</button>
+                    <button class="tag-btn" data-text="beautiful">美麗</button>
+                    <button class="tag-btn" data-text="handsome">英俊</button>
+                    <button class="tag-btn" data-text="chibi">卡通</button>
+                    <button class="tag-btn" data-text="chubby">豐滿</button>
+                    <button class="tag-btn" data-text="muscular">肌肉</button>
+                    <button class="tag-btn" data-text="slim">苗條</button>
+                    <button class="tag-btn" data-text="tall">高大</button>
+                    <button class="tag-btn" data-text="short">矮小</button>
+                    <button class="tag-btn" data-text="long hair">長髮</button>
+                    <button class="tag-btn" data-text="short hair">短髮</button>
+                    <button class="tag-btn" data-text="curly hair">捲髮</button>
+                    <button class="tag-btn" data-text="straight hair">直髮</button>
+                    <button class="tag-btn" data-text="black hair">黑髮</button>
+                    <button class="tag-btn" data-text="brown hair">棕髮</button>
+                    <button class="tag-btn" data-text="blonde hair">金髮</button>
+                    <button class="tag-btn" data-text="red hair">紅髮</button>
+                    <button class="tag-btn" data-text="blue hair">藍髮</button>
+                    <button class="tag-btn" data-text="green hair">綠髮</button>
+                    <button class="tag-btn" data-text="purple hair">紫髮</button>
+                    <button class="tag-btn" data-text="pink hair">粉髮</button>
+                    <button class="tag-btn" data-text="orange hair">橘髮</button>
+                    <button class="tag-btn" data-text="gray hair">灰髮</button>
+                    <button class="tag-btn" data-text="white hair">白髮</button>
+                </div>
+                <!-- 服飾分類 -->
+                <div class="tab-panel" id="clothes">
+                    <button class="tag-btn" data-text="kimono">和服</button>
+                    <button class="tag-btn" data-text="swimsuit">泳裝</button>
+                    <button class="tag-btn" data-text="school uniform">校服</button>
+                    <button class="tag-btn" data-text="casual">休閒</button>
+                    <button class="tag-btn" data-text="formal">正式</button>
+                    <button class="tag-btn" data-text="sportswear">運動</button>
+                    <button class="tag-btn" data-text="armor">盔甲</button>
+                    <button class="tag-btn" data-text="fantasy">奇幻</button>
+                    <button class="tag-btn" data-text="historical">歷史</button>
+                    <button class="tag-btn" data-text="modern">現代</button>
+                    <button class="tag-btn" data-text="futuristic">未來</button>
+                    <button class="tag-btn" data-text="suit">西裝</button>
+                    <button class="tag-btn" data-text="dress">洋裝</button>
+                    <button class="tag-btn" data-text="shirt">襯衫</button>
+                    <button class="tag-btn" data-text="pants">褲子</button>
+                    <button class="tag-btn" data-text="skirt">裙子</button>
+                    <button class="tag-btn" data-text="shorts">短褲</button>
+                    <button class="tag-btn" data-text="hat">帽子</button>
+                    <button class="tag-btn" data-text="glasses">眼鏡</button>
+                    <button class="tag-btn" data-text="scarf">圍巾</button>
+                    <button class="tag-btn" data-text="gloves">手套</button>
+                    <button class="tag-btn" data-text="shoes">鞋子</button>
+                    <button class="tag-btn" data-text="bag">包包</button>
+                    <button class="tag-btn" data-text="accessories">飾品</button>
+                </div>
+                <!-- 表情動作分類 -->
+                <div class="tab-panel" id="actions">
+                    <button class="tag-btn" data-text="smile">笑</button>
+                    <button class="tag-btn" data-text="cry">哭</button>
+                    <button class="tag-btn" data-text="dance">跳舞</button>
+                    <button class="tag-btn" data-text="sing">唱歌</button>
+                    <button class="tag-btn" data-text="eat">吃</button>
+                    <button class="tag-btn" data-text="sleep">睡覺</button>
+                    <button class="tag-btn" data-text="angry">生氣</button>
+                    <button class="tag-btn" data-text="surprised">驚訝</button>
+                    <button class="tag-btn" data-text="sad">傷心</button>
+                    <button class="tag-btn" data-text="happy">開心</button>
+                    <button class="tag-btn" data-text="confused">困惑</button>
+                    <button class="tag-btn" data-text="scared">害怕</button>
+                    <button class="tag-btn" data-text="excited">興奮</button>
+                    <button class="tag-btn" data-text="bored">無聊</button>
+                    <button class="tag-btn" data-text="tired">累</button>
+                    <button class="tag-btn" data-text="relaxed">放鬆</button>
+                    <button class="tag-btn" data-text="serious">嚴肅</button>
+                    <button class="tag-btn" data-text="playful">調皮</button>
+                    <button class="tag-btn" data-text="proud">驕傲</button>
+                    <button class="tag-btn" data-text="shy">害羞</button>
+                </div>
+                <!-- 場景分類 -->
+                <div class="tab-panel" id="scenes">
+                    <button class="tag-btn" data-text="beach">海灘</button>
+                    <button class="tag-btn" data-text="forest">森林</button>
+                    <button class="tag-btn" data-text="city">城市</button>
+                    <button class="tag-btn" data-text="mountain">山</button>
+                    <button class="tag-btn" data-text="desert">沙漠</button>
+                    <button class="tag-btn" data-text="space">太空</button>
+                    <button class="tag-btn" data-text="underwater">水下</button>
+                    <button class="tag-btn" data-text="countryside">鄉村</button>
+                    <button class="tag-btn" data-text="jungle">叢林</button>
+                    <button class="tag-btn" data-text="sky">天空</button>
+                    <button class="tag-btn" data-text="night">夜晚</button>
+                    <button class="tag-btn" data-text="day">白天</button>
+                    <button class="tag-btn" data-text="sunset">日落</button>
+                    <button class="tag-btn" data-text="sunrise">日出</button>
+                    <button class="tag-btn" data-text="rain">雨天</button>
+                    <button class="tag-btn" data-text="snow">雪地</button>
+                    <button class="tag-btn" data-text="spring">春天</button>
+                    <button class="tag-btn" data-text="summer">夏天</button>
+                    <button class="tag-btn" data-text="autumn">秋天</button>
+                    <button class="tag-btn" data-text="winter">冬天</button>
+                    <button class="tag-btn" data-text="festival">節日</button>
+                    <button class="tag-btn" data-text="party">派對</button>
+                    <button class="tag-btn" data-text="wedding">婚禮</button>
+                    <button class="tag-btn" data-text="birthday">生日</button>
+                    <button class="tag-btn" data-text="holiday">假期</button>
+                    <button class="tag-btn" data-text="vacation">度假</button>
+                    <button class="tag-btn" data-text="school">學校</button>
+                    <button class="tag-btn" data-text="office">辦公室</button>
+                    <button class="tag-btn" data-text="home">家</button>
+                    <button class="tag-btn" data-text="restaurant">餐廳</button>
+                    <button class="tag-btn" data-text="cafe">咖啡廳</button>
+                    <button class="tag-btn" data-text="park">公園</button>
+                    <button class="tag-btn" data-text="zoo">動物園</button>
+                    <button class="tag-btn" data-text="museum">博物館</button>
+                    <button class="tag-btn" data-text="library">圖書館</button>
+                    <button class="tag-btn" data-text="hospital">醫院</button>
+                    <button class="tag-btn" data-text="store">商店</button>
+                    <button class="tag-btn" data-text="market">市場</button>
+                    <button class="tag-btn" data-text="street">街道</button>
+                    <button class="tag-btn" data-text="alley">巷子</button>
+                    <button class="tag-btn" data-text="bridge">橋</button>
+                    <button class="tag-btn" data-text="tunnel">隧道</button>
+                    <button class="tag-btn" data-text="cave">洞穴</button>
+                    <button class="tag-btn" data-text="castle">城堡</button>
+                    <button class="tag-btn" data-text="ruins">廢墟</button>
+                    <button class="tag-btn" data-text="temple">寺廟</button>
+                    <button class="tag-btn" data-text="church">教堂</button>
+                    <button class="tag-btn" data-text="shrine">神社</button>
+                </div>
+                <!-- 鏡頭分類 -->
+                <div class="tab-panel" id="lens">
+                    <button class="tag-btn" data-text="close-up">特寫</button>
+                    <button class="tag-btn" data-text="gravure photo, beautiful face, natural lighting">寫真照</button>
+                    <button class="tag-btn" data-text="selfie,natural background">自拍照</button>
+                    <button class="tag-btn" data-text="panorama">全景</button>
+                    <button class="tag-btn" data-text="bird's-eye view">鳥瞰</button>
+                    <button class="tag-btn" data-text="front view">正面</button>
+                    <button class="tag-btn" data-text="side view">側面</button>
+                    <button class="tag-btn" data-text="back view">背面</button>
+                    <button class="tag-btn" data-text="top view">頂部</button>
+                    <button class="tag-btn" data-text="bottom view">底部</button>
+                    <button class="tag-btn" data-text="aerial view">空中</button>
+                    <button class="tag-btn" data-text="underwater view">水下</button>
+                </div>
+                <!-- 風格 -->
+                <div class="tab-panel" id="style">
+                    <button class="tag-btn" data-text="photo-realistic,ultra detail,high quality">寫實</button>
+                    <button class="tag-btn" data-text="illustration,painterly,soft shading">插畫</button>
+                    <button class="tag-btn" data-text="american comic style, bold lines,dynamic shading">美式漫畫</button>
+                    <button class="tag-btn" data-text="anime style, clean lineart, vibrant colors">動漫</button>
+                    <button class="tag-btn" data-text="surreal,dreamlike,fantasy atmosphere">超現實</button>
+                    <button class="tag-btn" data-text="3d render,cartoon style, smooth surfaces">3D卡通</button>
+                    <button class="tag-btn" data-text="portrait,soft lighting">人像</button>
+                    <button class="tag-btn" data-text="fantasy,epic scenery,magical elements">奇幻</button>
+                    <button class="tag-btn" data-text="cyberpunk,neon lights,futuristic cityscape">賽博朋克</button>
+                    <button class="tag-btn" data-text="masterpiece, best quality, ultra detailed">高品質畫面</button>
+                    <button class="tag-btn" data-text="cinematic lighting, volumetric light, rim light">電影感光影</button>
+                    <button class="tag-btn" data-text="highly detailed eyes, catchlights, expressive face">精緻臉部表情</button>
+                </div>
+            </div>
+        </div>
+        <div class="image-style">
+            <h3>圖片風格(在提示詞中打入對應風格標籤效果較好)(請等跳出已切換模型的提示再按送出):</h3>
+            <div class="styles">
+                <button class="style-btn" data-model="realistic">
+                    <img src="{{ url_for('static', filename='images/image (1).png') }}" alt="寫實">
+                    <p>寫實</p>
+                </button>
+                <button class="style-btn" data-model="illustration">
+                    <img src="{{ url_for('static', filename='images/image (2).png') }}" alt="插畫">
+                    <p>插畫</p>
+                </button>
+                <button class="style-btn" data-model="american_comic">
+                    <img src="{{ url_for('static', filename='images/image (4).png') }}" alt="美式漫畫">
+                    <p>美式漫畫</p>
+                </button>
+                <button class="style-btn" data-model="anime">
+                    <img src="{{ url_for('static', filename='images/image (5).png') }}" alt="動漫">
+                    <p>動漫</p>
+                </button>
+                <button class="style-btn" data-model="surreal">
+                    <img src="{{ url_for('static', filename='images/image (6).png') }}" alt="超現實">
+                    <p>超現實</p>
+                </button>
+                <button class="style-btn" data-model="3d_cartoon">
+                    <img src="{{ url_for('static', filename='images/image (7).png') }}" alt="3D卡通">
+                    <p>3D卡通</p>
+                </button>
+
+            </div>
+        </div>
+        
+        <!-- 用來顯示多張圖片的容器 -->
+        <div class="image-container" id="image-container" style="display: none;">   
+            <!-- 多張圖片會由 JavaScript 動態加進來 -->
+        </div>
+        <div class="status-container" id="status-container" style="display: none;">
+            <p id="status-text">正在生成圖片...</p>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+    
+{% block extra_js %}
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>  <!-- 如果有需要額外的 JS -->
+{% endblock %}
+
